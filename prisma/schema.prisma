@@ -1,0 +1,162 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int        @id @default(autoincrement())
+  name          String
+  email         String?    @unique
+  mobile        String     @unique
+  username      String     @unique
+  password      String
+  bio           String?
+  avatarUrl     String?
+  matchesPlayed Int        @default(0)
+  winRatio      Float      @default(0)
+  performancePoints Int    @default(0)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  // Relations
+  organizedTournaments Tournament[] @relation("TournamentOrganizers")
+  ledTowers           Tower[]        @relation("TowerLeader")
+  towerMemberships    TowerMember[]
+  teamMemberships     TeamMember[]
+  registrationsCreated TournamentRegistration[] @relation("RegistrationCreatedBy")
+  registrationsApproved TournamentRegistration[] @relation("RegistrationApprovedBy")
+  proofsUploaded      Proof[]
+}
+
+enum TournamentStatus {
+  UPCOMING
+  LIVE
+  COMPLETED
+}
+
+model Tournament {
+  id            Int        @id @default(autoincrement())
+  name          String
+  game          String
+  description   String?
+  entryFee      Int        @default(0)
+  maxTeams      Int
+  matchDateTime DateTime
+  status        TournamentStatus @default(UPCOMING)
+
+  // Relations
+  organizers    User[]      @relation("TournamentOrganizers")
+  registrations TournamentRegistration[]
+  matches       Match[]
+}
+
+enum RegistrationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model TournamentRegistration {
+  id                 Int         @id @default(autoincrement())
+  tournamentId       Int
+  teamId             Int
+  status             RegistrationStatus @default(PENDING)
+  createdByUserId    Int
+  approvedByUserId   Int?
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+
+  tournament         Tournament  @relation(fields: [tournamentId], references: [id])
+  team               Team        @relation(fields: [teamId], references: [id])
+  createdBy          User        @relation("RegistrationCreatedBy", fields: [createdByUserId], references: [id])
+  approvedBy         User?       @relation("RegistrationApprovedBy", fields: [approvedByUserId], references: [id])
+
+  @@unique([tournamentId, teamId])
+}
+
+model Match {
+  id              Int        @id @default(autoincrement())
+  tournamentId    Int
+  teamAId         Int
+  teamBId         Int
+  winnerTeamId    Int?
+  roomId          String?
+  createdAt       DateTime   @default(now())
+
+  tournament      Tournament @relation(fields: [tournamentId], references: [id])
+  teamA           Team       @relation("MatchTeamA", fields: [teamAId], references: [id])
+  teamB           Team       @relation("MatchTeamB", fields: [teamBId], references: [id])
+  winnerTeam      Team?      @relation("MatchWinnerTeam", fields: [winnerTeamId], references: [id])
+  proofs          Proof[]
+}
+
+model Proof {
+  id          Int      @id @default(autoincrement())
+  matchId     Int
+  uploadedById Int
+  url         String
+  uploadedAt  DateTime @default(now())
+
+  match       Match    @relation(fields: [matchId], references: [id])
+  uploadedBy  User     @relation(fields: [uploadedById], references: [id])
+}
+
+model Tower {
+  id        Int      @id @default(autoincrement())
+  name      String
+  code      String   @unique
+  leaderId  Int
+
+  leader    User     @relation("TowerLeader", fields: [leaderId], references: [id])
+  members   TowerMember[]
+  teams     Team[]
+}
+
+enum TowerRole {
+  CO_LEADER
+  MEMBER
+}
+
+model TowerMember {
+  id       Int      @id @default(autoincrement())
+  towerId  Int
+  userId   Int
+  role     TowerRole @default(MEMBER)
+  approved Boolean  @default(false)
+
+  tower    Tower    @relation(fields: [towerId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
+
+  @@unique([towerId, userId])
+  @@unique([userId])
+}
+
+model Team {
+  id        Int      @id @default(autoincrement())
+  name      String
+  towerId   Int
+
+  tower     Tower    @relation(fields: [towerId], references: [id])
+  members   TeamMember[]
+  registrations TournamentRegistration[]
+  matchesAsA Match[] @relation("MatchTeamA")
+  matchesAsB Match[] @relation("MatchTeamB")
+  matchesWon Match[] @relation("MatchWinnerTeam")
+
+  @@unique([towerId, name])
+}
+
+model TeamMember {
+  id        Int   @id @default(autoincrement())
+  teamId    Int
+  userId    Int
+
+  team      Team  @relation(fields: [teamId], references: [id])
+  user      User  @relation(fields: [userId], references: [id])
+
+  @@unique([teamId, userId])
+}

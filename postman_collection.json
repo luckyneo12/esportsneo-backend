@@ -1,0 +1,575 @@
+{
+  "info": {
+    "name": "Esports Tournament API",
+    "description": "Complete API collection for Esports Tournament Management System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\",\n  \"username\": \"testuser\",\n  \"mobile\": \"9876543210\",\n  \"password\": \"test123\",\n  \"email\": \"test@example.com\",\n  \"role\": \"PLAYER\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mobile\": \"9876543210\",\n  \"password\": \"test123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "me"]
+            }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Name\",\n  \"bio\": \"Pro gamer\",\n  \"avatarUrl\": \"/uploads/avatar.jpg\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "me"]
+            }
+          }
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get User Teams",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/1/teams",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "1", "teams"]
+            }
+          }
+        },
+        {
+          "name": "Get User Towers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/1/towers",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "1", "towers"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Towers",
+      "item": [
+        {
+          "name": "Create Tower",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Elite Squad\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/towers",
+              "host": ["{{baseUrl}}"],
+              "path": ["towers"]
+            }
+          }
+        },
+        {
+          "name": "Join Tower",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"ABC123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/towers/join",
+              "host": ["{{baseUrl}}"],
+              "path": ["towers", "join"]
+            }
+          }
+        },
+        {
+          "name": "Get Tower Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/towers/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["towers", "1"]
+            }
+          }
+        },
+        {
+          "name": "Approve Tower Member",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/towers/1/members/2/approve",
+              "host": ["{{baseUrl}}"],
+              "path": ["towers", "1", "members", "2", "approve"]
+            }
+          }
+        },
+        {
+          "name": "Remove Tower Member",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/towers/1/members/2",
+              "host": ["{{baseUrl}}"],
+              "path": ["towers", "1", "members", "2"]
+            }
+          }
+        },
+        {
+          "name": "Promote to Co-Leader",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/towers/1/coleaders/2",
+              "host": ["{{baseUrl}}"],
+              "path": ["towers", "1", "coleaders", "2"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Teams",
+      "item": [
+        {
+          "name": "Create Team",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Team Alpha\",\n  \"logoUrl\": \"/uploads/logo.jpg\",\n  \"captainId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/towers/1/teams",
+              "host": ["{{baseUrl}}"],
+              "path": ["towers", "1", "teams"]
+            }
+          }
+        },
+        {
+          "name": "Add Team Member",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/teams/1/members",
+              "host": ["{{baseUrl}}"],
+              "path": ["teams", "1", "members"]
+            }
+          }
+        },
+        {
+          "name": "Get Tower Teams",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/towers/1/teams",
+              "host": ["{{baseUrl}}"],
+              "path": ["towers", "1", "teams"]
+            }
+          }
+        },
+        {
+          "name": "Get Team Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/teams/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["teams", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tournaments",
+      "item": [
+        {
+          "name": "Create Tournament",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"BGMI Championship 2024\",\n  \"game\": \"BGMI\",\n  \"description\": \"Annual championship tournament\",\n  \"bannerUrl\": \"/uploads/banner.jpg\",\n  \"logoUrl\": \"/uploads/logo.jpg\",\n  \"entryFee\": 500,\n  \"maxTeams\": 16,\n  \"matchDateTime\": \"2024-12-31T18:00:00.000Z\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/tournaments",
+              "host": ["{{baseUrl}}"],
+              "path": ["tournaments"]
+            }
+          }
+        },
+        {
+          "name": "Get All Tournaments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tournaments",
+              "host": ["{{baseUrl}}"],
+              "path": ["tournaments"]
+            }
+          }
+        },
+        {
+          "name": "Get Tournaments by Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tournaments?status=UPCOMING",
+              "host": ["{{baseUrl}}"],
+              "path": ["tournaments"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "UPCOMING"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Tournament Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tournaments/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["tournaments", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Registrations",
+      "item": [
+        {
+          "name": "Register Team for Tournament",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"teamId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/tournaments/1/registrations",
+              "host": ["{{baseUrl}}"],
+              "path": ["tournaments", "1", "registrations"]
+            }
+          }
+        },
+        {
+          "name": "Approve Registration",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tournaments/1/registrations/1/approve",
+              "host": ["{{baseUrl}}"],
+              "path": ["tournaments", "1", "registrations", "1", "approve"]
+            }
+          }
+        },
+        {
+          "name": "Reject Registration",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tournaments/1/registrations/1/reject",
+              "host": ["{{baseUrl}}"],
+              "path": ["tournaments", "1", "registrations", "1", "reject"]
+            }
+          }
+        },
+        {
+          "name": "Get Tournament Registrations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tournaments/1/registrations",
+              "host": ["{{baseUrl}}"],
+              "path": ["tournaments", "1", "registrations"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Upload",
+      "item": [
+        {
+          "name": "Upload Single File",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/upload",
+              "host": ["{{baseUrl}}"],
+              "path": ["upload"]
+            }
+          }
+        },
+        {
+          "name": "Upload Multiple Files",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "files",
+                  "type": "file",
+                  "src": ""
+                },
+                {
+                  "key": "files",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/upload/multiple",
+              "host": ["{{baseUrl}}"],
+              "path": ["upload", "multiple"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

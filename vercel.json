@@ -12,8 +12,9 @@
       "dest": "api/index.js"
     }
   ],
-  "env": {
-    "DATABASE_URL": "@database_url",
-    "JWT_SECRET": "@jwt_secret"
+  "functions": {
+    "api/index.js": {
+      "maxDuration": 10
+    }
   }
 }

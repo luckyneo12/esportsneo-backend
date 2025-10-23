@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "node src/index.js",
     "start": "node src/index.js",
-    "build": "prisma generate",
-    "vercel-build": "prisma generate && prisma migrate deploy"
+    "build": "echo 'Build complete'"
   },
   "keywords": [
     "esportsneo",

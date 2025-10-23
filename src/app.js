@@ -39,6 +39,8 @@ app.use((req, res, next) => {
 
 // API routes
 app.use('/api', routes);
+// Backward compatibility: also expose routes at root (so /auth/login works)
+app.use('/', routes);
 
 // Root endpoint
 app.get('/', (req, res) => {

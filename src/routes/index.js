@@ -15,6 +15,16 @@ const leaderboardRoutes = require('./leaderboard.routes');
 
 const router = express.Router();
 
+// Health check endpoint
+router.get('/health', (req, res) => {
+  res.json({ status: 'ok', message: 'API is running' });
+});
+
+// Handle preflight requests for all routes
+router.options('*', (req, res) => {
+  res.status(200).end();
+});
+
 router.use(authRoutes);
 router.use(usersRoutes);
 router.use(profileRoutes);

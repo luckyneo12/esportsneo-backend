@@ -1,5 +1,17 @@
 node_modules
 # Keep environment variables out of version control
 .env
+.env.local
+.env*.local
 
 /generated/prisma
+
+# Vercel
+.vercel
+
+# Uploads (no longer needed with Cloudinary)
+uploads/
+
+# OS
+.DS_Store
+Thumbs.db
